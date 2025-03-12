@@ -2,9 +2,9 @@ opencv-python
 numpy
 dash
 mediapipe
-tensorflow
-keras
-torch
+tensorflow==2.13.0
+keras==2.13.1
+torch==2.0.0
 matplotlib
 seaborn
 pycm
