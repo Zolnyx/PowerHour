@@ -13,7 +13,7 @@ To run the app, first install python 3.9, then:
 
 initialise a virtual environment using python 
 ```zsh
-py -3.10 -m venv myenv
+py -3.9 -m venv myenv
 source myenv/bin/activate # for linux
 .\myenv\Scripts\Activate # for windows
 ```
