@@ -14,7 +14,8 @@ To run the app, first install python 3.9, then:
 initialise a virtual environment using python 
 ```zsh
 py -3.10 -m venv myenv
-source myenv/bin/activate  # (or ".myenv\Scripts\activate" on Windows)
+source myenv/bin/activate # for linux
+.\myenv\Scripts\Activate # for windows
 ```
 following that, install the requirements
 ```zsh
@@ -22,7 +23,7 @@ pip install -r requirements.txt
 ```
 after that simply run
 ```zsh
-pip install -r requirements.txt and then run app_squat.py
+python -u app_squat.py
 ```
 
 # Our model
