@@ -9,7 +9,21 @@ https://github.com/twixupmysleeve/Posture/assets/15158326/b5155d6b-667e-4389-b75
 
 # Our demo
 
-To run the app, first run pip install -r requirements.txt and then run app_squat.py
+To run the app, first install python 3.9, then:
+
+initialise a virtual environment using python 
+```zsh
+py -3.10 -m venv myenv
+source myenv/bin/activate  # (or ".myenv\Scripts\activate" on Windows)
+```
+following that, install the requirements
+```zsh
+pip install -r requirements.txt
+```
+after that simply run
+```zsh
+pip install -r requirements.txt and then run app_squat.py
+```
 
 # Our model
 
