@@ -29,3 +29,5 @@ python -u app_squat.py
 # Our model
 
 With no available dataset online, we took it upon ourselves to generate data. After collecting hours of labelled videos of people performing Squats in a multitude of correct and incorrect ways, we used each frame of video (at 12fps) as a labeled training example - which got us a training set size of tens of thousands. 
+
+Dekho eisa hai ki ye hai ab jo bhi hai so dont judge.
