@@ -51,18 +51,24 @@ def label_final_results(image, label):
         "k": "Knee Ahead, push your butt out",
         "h": "Back Wrongly Positioned, keep your chest up",
         "r": "Back Wrongly Positioned, keep your chest up",
-        "x": "Correct Depth"
+        "x": "Correct Depth",
+        "i": "Invalid Position - Reset"  # Added this line
     }
 
-    image_width, image_height, _ = image.shape
+    # Filter out invalid characters
+    label_list = [char for char in label if char in expanded_labels]
+    
+    if not label_list:  # If empty after filtering
+        label_list = ['i']  # Default to invalid
 
-    label_list = [character for character in label]
     described_label = list(map(lambda x: expanded_labels[x], label_list))
-
+    
     color = (42, 210, 48) if "c" in label_list else (13, 13, 205)
-
+    
+    image_height, image_width, _ = image.shape
+    
     cv2.rectangle(image,
-        (0, 0), (image_height, 74),
+        (0, 0), (image_width, 74),
         color,
         -1
     )

@@ -1,4 +1,4 @@
-# Posture: Pose Tracking and Machine Learning for prescribing corrective suggestions to improve posture and form while exercising.(WIP)
+# Posture: Pose Tracking and Machine Learning for prescribing corrective suggestions to improve posture and form while exercising.
 
 This repository contains code made for submission to [Atlas Hacks.](https://devpost.com/software/posture-w5670m)
 
