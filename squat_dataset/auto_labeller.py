@@ -4,19 +4,19 @@ import pandas as pd
 from datetime import datetime
 
 class SquatLabeler:
-    def __init__(self, video_dir="videos", output_file="labels.csv"):
+    def __init__(self, video_dir="videos", output_file="labels-vectors/labels.csv"):
         self.video_dir = video_dir
         self.output_file = output_file
         self.current_labels = []
         
         # Key mappings (same as before)
         self.label_keys = {
-            49: 'c',  # 1
-            50: 'k',  # 2
-            51: 'h',  # 3
-            52: 'r',  # 4
-            53: 'x',  # 5
-            48: 'i'   # 0
+            49: 'c',  # 1 Correct form
+            50: 'k',  # 2 Knee ahead, push butt out
+            51: 'h',  # 3 Back wrongly positioned, keep chest up
+            52: 'r',  # 4 Back wrongly postiioned, keep chest up
+            53: 'x',  # 5 Corect depth
+            48: 'i'   # 0 Ignore the frame
         }
 
     def process_video(self, video_path):
