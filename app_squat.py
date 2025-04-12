@@ -2,7 +2,6 @@ print("✅ Starting app_squat.py...")
 
 import dash
 from dash import dcc, html
-# import dash_dangerously_set_inner_html
 import mediapipe as mp
 import SquatPosture as sp
 from flask import Flask, Response
@@ -130,4 +129,4 @@ app.layout = html.Div(className="main", children=[
 
 if __name__ == '__main__':
     print("Starting Flask server...")
-    app.run_server(debug=True)
+    app.run_server(debug=True, use_reloader=False)
