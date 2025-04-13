@@ -54,17 +54,9 @@ def label_final_results(image, label):
         "x": "Correct Depth"
     }
 
-    # Skip processing if frame is invalid
-    if "i" in label:
-        return  # Just return without drawing anything
-
     image_width, image_height, _ = image.shape
 
-    label_list = [char for char in label if char in expanded_labels]
-    
-    if not label_list:  # If no valid labels remain after filtering
-        return  # Optionally: label_list = ['c'] to default to correct
-
+    label_list = [character for character in label]
     described_label = list(map(lambda x: expanded_labels[x], label_list))
 
     color = (42, 210, 48) if "c" in label_list else (13, 13, 205)

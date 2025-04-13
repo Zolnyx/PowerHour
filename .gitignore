@@ -4,6 +4,4 @@ venv/
 **/__pycache__
 .idea/
 atlas/
-squat_dataset/processed
-squat_dataset/raw_videos
-
+myenv/

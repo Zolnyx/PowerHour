@@ -1,43 +1,30 @@
-print("✅ Starting app_squat.py...")
+print("✅ Starting app_squat.py...")  # Debug print
 
 import dash
-from dash import dcc, html
+import dash_core_components as dcc
+import dash_html_components as html
+
+
+import dash_dangerously_set_inner_html
 import mediapipe as mp
 import SquatPosture as sp
 from flask import Flask, Response
 import cv2
+import tensorflow as tf
+
 import numpy as np
-import torch  # Changed from tensorflow to torch
 from utils import landmarks_list_to_array, label_params, label_final_results
 
-print("✅ Imported all libraries successfully.")
+print("✅ Imported all libraries successfully.")  # Debug print
 
-# Initialize MediaPipe
-print("🔹 Loading MediaPipe modules...")
+print("🔹 Before loading MediaPipe modules...")
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 print("✅ Loaded MediaPipe modules.")
 
-# Load PyTorch model
-print("🔹 Loading PyTorch model...")
-class SquatPostureModel(torch.nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.net = torch.nn.Sequential(
-            torch.nn.Linear(5, 64),
-            torch.nn.ReLU(),
-            torch.nn.Linear(64, 32),
-            torch.nn.ReLU(),
-            torch.nn.Linear(32, 6)  # 6 outputs for [c, k, h, r, x, i]
-        )
-        
-    def forward(self, x):
-        return self.net(x)
-
-model = SquatPostureModel()
-model.load_state_dict(torch.load("squat_model.pth"))
-model.eval()
-print("✅ PyTorch model loaded successfully.")
+print("🔹 Before loading model...")
+model = tf.keras.models.load_model("working_model_1")  # Temporarily comment this out
+print("✅ Model loaded successfully (skipped for now).")
 
 class VideoCamera(object):
     def __init__(self):
@@ -53,10 +40,8 @@ class VideoCamera(object):
 
 def gen(camera):
     cap = camera.video
+    i=0
     with mp_pose.Pose(
-            static_image_mode=False,
-            model_complexity=1,
-            enable_segmentation=False,
             min_detection_confidence=0.5,
             min_tracking_confidence=0.5) as pose:
         while cap.isOpened():
@@ -65,68 +50,111 @@ def gen(camera):
 
             if not success:
                 print("Ignoring empty camera frame.")
+                # If loading a video, use 'break' instead of 'continue'.
+                # continue
                 break
 
-            # Process frame with MediaPipe
+            image_height, image_width, _ = image.shape
+
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             image.flags.writeable = False
-            results = pose.process(image)
+
+            dim=(image_width//5, image_height//5)
+
+            resized_image = cv2.resize(image, dim)
+
             image.flags.writeable = True
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-            # Get squat parameters
+            results = pose.process(resized_image)
+
             params = sp.get_params(results)
-            if params is None:
-                continue
+            flat_params = np.reshape(params, (5, 1))
 
-            # Convert to PyTorch tensor and predict
-            with torch.no_grad():
-                input_tensor = torch.FloatTensor(params.reshape(1, -1))
-                output = torch.sigmoid(model(input_tensor)).numpy()[0]  # Apply sigmoid for probabilities
+            # params will be run through the model
 
-            # Process output (same logic as before)
+            output = model.predict(flat_params.T)
+
+            output[0][0] *= 0.7
+            output[0][1] *= 1.7
+            output[0][2] *= 4
+            output[0][3] *= 0
+            output[0][4] *= 5
+
+            output = output * (1 / np.sum(output))
+
             output_name = ['c', 'k', 'h', 'r', 'x', 'i']
-            label = "".join([output_name[i] for i in range(6) if output[i] > 0.5])
-            label = "c" if label == "" else label  # Default to correct if no flags
-            
-            # Add visual feedback
+
+            output[0][2] += 0.1
+
+            # print(output[0][2], output[0][3])
+
+            label = ""
+
+            for i in range(1, 4):
+                label += output_name[i] if output[0][i] > 0.5 else ""
+
+            if label == "":
+                label = "c"
+
+            label += 'x' if output[0][4] > 0.15 and label=='c' else ''
+
+
+            # print(label, output)
+
             label_final_results(image, label)
 
-            # Encode frame for web streaming
+            i+=1
+
+            # mp_drawing.draw_landmarks(
+            #     image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
+
+            # coords = landmarks_list_to_array(results.pose_landmarks, image.shape)
+            # label_params(image, params, coords)
+
+
             ret, jpeg = cv2.imencode('.jpg', image)
             frame = jpeg.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-# Flask/Dash setup
+
 server = Flask(__name__)
+# external_stylesheets = ['./app.css']
 app = dash.Dash(__name__, server=server)
 app.title = "Posture"
 
+
 @server.route('/video_feed')
 def video_feed():
-    return Response(gen(VideoCamera()), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen(VideoCamera()) ,mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 app.layout = html.Div(className="main", children=[
-    html.Link(rel="stylesheet", href="/assets/stylesheet.css"),
-    html.Div(className="main-container", children=[
-        html.Table(className="table", children=[
-            html.Tr(className="row", children=[
-                html.Td(html.Img(src="/assets/animation_for_web.gif", className="logo"))
-            ]),
-            html.Tr(className="choices", children=[
-                html.Td("Your personal AI Gym Trainer")
-            ]),
-            html.Tr(className="row", children=[
-                html.Td(html.Img(src="/video_feed", className="feed"))
-            ]),
-            html.Tr(className="disclaimer", children=[
-                html.Td("Please ensure that the scene is well lit and your entire body is visible")
-            ])
-        ])
-    ])
+    html.Link(
+        rel="stylesheet",
+        href="/assets/stylesheet.css"
+    ),
+    dash_dangerously_set_inner_html.DangerouslySetInnerHTML("""
+        <div class="main-container">
+            <table cellspacing="20px" class="table">
+                <tr class="row">
+                    <td> <img src="/assets/animation_for_web.gif" class="logo" /> </td>
+                </tr>
+                <tr class="choices">
+                    <td> Your personal AI Gym Trainer </td>
+                </tr>
+                <tr class="row">
+                    <td> <img src="/video_feed" class="feed"/> </td>
+                </tr>
+                <tr class="disclaimer">
+                    <td> Please ensure that the scene is well lit and your entire body is visible </td>
+                </tr>
+            </table>
+        </div>
+    """),
 ])
 
 if __name__ == '__main__':
-    print("Starting Flask server...")
-    app.run_server(debug=True, use_reloader=False)
+    print("Starting Flask server...")  # ✅ Add this line
+    app.run_server(debug=True)

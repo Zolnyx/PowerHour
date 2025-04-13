@@ -1,21 +1,13 @@
-# Core Computer Vision
-opencv-python==4.9.0.80  # Latest OpenCV with 3.12 support
-mediapipe==0.10.21  # Stable MediaPipe for pose estimation
-
-# Machine Learning (PyTorch)
-torch==2.2.1  # PyTorch (with CUDA if available)
-torchvision==0.17.1  # For image preprocessing (if needed)
-onnxruntime==1.17.1  # Optional: For faster inference
-
-# Web Framework (Modern Dash/Flask)
-dash==2.15.0
-dash-bootstrap-components==1.6.0
-flask==3.0.2
-
-# Data Handling
-numpy==1.26.4
-pandas==2.2.1
-
-# Utilities
-scikit-learn==1.4.1.post1  # For metrics (if needed)
-tqdm==4.66.2  # Progress bars (optional)
+opencv-python
+numpy
+dash
+mediapipe
+tensorflow==2.13.0
+keras==2.13.1
+torch==2.0.0
+matplotlib
+seaborn
+pycm
+pandas
+plotly
+dash_dangerously_set_inner_html
