@@ -48,7 +48,7 @@ def label_params(frame, params, coords):
 def label_final_results(image, label):
     expanded_labels = {
         "c": "Correct Form",
-        "k": "Knee Ahead, push your butt out",
+        "k": "Knee Ahead, push your hips out bent more",
         "h": "Back Wrongly Positioned, keep your chest up",
         "r": "Back Wrongly Positioned, keep your chest up",
         "x": "Correct Depth"
