@@ -120,7 +120,7 @@ def gen(camera):
 server = Flask(__name__)
 # external_stylesheets = ['./app.css']
 app = dash.Dash(__name__, server=server)
-app.title = "Posture"
+app.title = "Power-Hour"
 
 
 @server.route('/video_feed')
@@ -140,7 +140,7 @@ app.layout = html.Div(className="main", children=[
                     <td> <img src="/assets/animation_for_web.gif" class="logo" /> </td>
                 </tr>
                 <tr class="choices">
-                    <td> Your personal AI Gym Trainer </td>
+                    <td> Your personal AI Gym Trainer for Squats </td>
                 </tr>
                 <tr class="row">
                     <td> <img src="/video_feed" class="feed"/> </td>
