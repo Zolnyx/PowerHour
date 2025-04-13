@@ -4,7 +4,6 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 
-
 import dash_dangerously_set_inner_html
 import mediapipe as mp
 import SquatPosture as sp
@@ -122,7 +121,7 @@ def gen(camera):
 server = Flask(__name__)
 # external_stylesheets = ['./app.css']
 app = dash.Dash(__name__, server=server)
-app.title = "Posture"
+app.title = "Power-Hour"
 
 
 @server.route('/video_feed')
@@ -133,16 +132,16 @@ def video_feed():
 app.layout = html.Div(className="main", children=[
     html.Link(
         rel="stylesheet",
-        href="/assets/stylesheet.css"
+        href="/assets/styles.css"
     ),
     dash_dangerously_set_inner_html.DangerouslySetInnerHTML("""
         <div class="main-container">
             <table cellspacing="20px" class="table">
                 <tr class="row">
-                    <td> <img src="/assets/animation_for_web.gif" class="logo" /> </td>
+                    <td> <img src="/assets/powerhour_animation.gif" class="logo" /> </td>
                 </tr>
                 <tr class="choices">
-                    <td> Your personal AI Gym Trainer </td>
+                    <td> Your personal AI Gym Trainer for Squats </td>
                 </tr>
                 <tr class="row">
                     <td> <img src="/video_feed" class="feed"/> </td>

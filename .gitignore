@@ -5,3 +5,5 @@ venv/
 .idea/
 atlas/
 myenv/
+data_processing/processed
+data_processing/raw_videos

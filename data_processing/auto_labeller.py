@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime
 
 class SquatLabeler:
-    def __init__(self, video_dir="processed/", output_file="labels.csv"):
+    def __init__(self, video_dir="processed/", output_file="demodata/labels.csv"):
         self.video_dir = video_dir
         self.output_file = output_file
         self.current_labels = []
@@ -126,6 +126,6 @@ class SquatLabeler:
 if __name__ == "__main__":
     labeler = SquatLabeler(
         video_dir="processed",
-        output_file="labels.csv"
+        output_file="demodata/labels.csv"
     )
     labeler.run()
