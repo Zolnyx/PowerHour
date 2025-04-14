@@ -58,7 +58,7 @@ if not USE_MODEL:
 
     plt.show()
 else:
-    model = tf.keras.models.load_model("working_model_1")
+    model = tf.keras.models.load_model("working_model_3")
     preds = model.predict(test_features)
 
     cm = ConfusionMatrix(actual_vector=test_labels[0], predict_vector=preds[0])
