@@ -41,7 +41,8 @@ if __name__ == '__main__':
 
                 image_hight, image_width, _ = image.shape
 
-                params = sp.get_params(results)
+                params = np.ravel(sp.get_params(results))  # force into shape (5,)
+
                 # print(params.shape)
 
                 mp_drawing.draw_landmarks(

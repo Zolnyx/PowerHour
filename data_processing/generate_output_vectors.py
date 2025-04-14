@@ -3,7 +3,7 @@ import cv2
 
 
 def get_total_frames(video):
-    filename = "data/processed/" + video + "_squat.mp4"
+    filename = "processed/" + video + "_squat.mp4"
     cap = cv2.VideoCapture(filename)
     frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     cap.release()
@@ -14,7 +14,7 @@ rows = []
 
 fps = 12
 
-with open('data/labels.csv') as csv_file:
+with open('demodata/labels.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     for r in csv_reader:
